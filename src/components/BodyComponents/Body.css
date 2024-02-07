@@ -1,0 +1,44 @@
+.main-body-container{
+    position: relative;
+    top: 4.5rem;
+    background-color: rgb(255, 255, 255);
+}
+.filter-nav-container{
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,.1);
+}
+.content-div h1{
+    font-size: x-large;
+    font-weight: 300;
+    padding-top: 3px;
+}
+.card-container{
+    height: 16.5rem;
+    width: 19rem;
+    margin-top: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 8px;
+    gap: 8px;
+    border: 1px rgba(172, 170, 170, 0.562) solid;
+}
+.item-img{
+    width: 17.5rem;
+    height: 11rem;
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+.item-details{
+    height: 35%;
+}
+.likeBtn button{
+    border-radius: 50%;
+}
+.location,.item-name{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}

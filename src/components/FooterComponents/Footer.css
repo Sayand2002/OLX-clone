@@ -1,0 +1,63 @@
+.footer-main-div {
+    position: relative;
+    width: 100vw;
+    margin-top: 10rem;
+}
+.footer-banner-container{
+    display: flex;
+    justify-content: center;
+    height: 13rem;
+    background-color: #F7F8F9;
+}
+.footer-img{
+    width: 35%;
+    background-image: url(./src/assets/phone-app.webp);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.footer-banner-descriptions{
+    width: 35%;
+    padding-left: 2rem;
+}
+
+.footer-banner-buttons{
+    width: 25%;
+}
+
+.vertical-hr {
+    border: none;
+    height: 120px; 
+    width: 2px;    
+    background-color: #a2a2a2;
+    transform: rotate(180deg);
+    margin-top: 40px;
+  }
+  .footer-banner-buttons img{
+    width: 128px;
+    height: 40px;
+  }
+
+  .footer-list-container{
+    width: 100vw;
+    display: flex;
+    justify-content: space-evenly;
+}
+.footer-list-container h1{
+    font-weight: 500;
+    font-size: small;
+    padding-bottom: 8px;
+}
+.footer-list-container li, p{
+    font-size: small;
+    color: #597478;
+    padding-bottom: 4px;
+}
+.copy-right{
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(1,47,52);
+    height: 3.5rem;
+    color: white;
+    font-size: 12px;
+    padding: 1.5rem 9rem 0 9rem
+}

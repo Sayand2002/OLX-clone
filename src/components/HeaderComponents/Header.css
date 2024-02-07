@@ -1,0 +1,126 @@
+.header {
+    background-color: #EFF1F3;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 5px rgb(255, 255, 255) solid;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,.1);
+    position: fixed;
+    z-index: 3;
+
+}
+
+.header-container {
+    width: 97vw;
+    display: flex;
+    gap: 14px;
+}
+
+.brand-logo a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.country-search {
+    width: 29%;
+}
+
+.country-search-container {
+    display: flex;
+    align-items: center;
+    border: 2px #0B2f34 solid;
+    border-radius: 4px;
+    height: 100%;
+    background-color: white;
+}
+
+.country-search-container:focus-within {
+    outline: none;
+    border: 2px aqua solid;
+}
+
+.search-boxes {
+    width: 72%;
+}
+
+.item-search {
+    display: flex;
+    align-items: center;
+    border: 2px #0B2f34 solid;
+    border-radius: 4px;
+    height: 100%;
+    background-color: white;
+}
+
+.item-search input {
+    width: 95%;
+}
+
+.login-link {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.sell-button span{
+    width: 5.4rem;
+    height: 2.3rem;
+    border-radius: 40px;
+    
+}
+
+.country-dropdown {
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    width: 100%;
+    border-radius: 3px;
+    opacity: 0;
+}
+
+.country-dropdown h1 {
+    padding-top: 10px;
+    padding-bottom: 20px;
+    color: rgba(0, 0, 0, 0.522);
+}
+
+.country-dropdown span {
+    display: flex;
+    gap: 10px;
+    color: black;
+    padding-bottom: 20px;
+    font-size: small;
+}
+
+.country-dropdown svg {
+    fill: rgba(0, 0, 0, 0.522);
+}
+
+.country-dropdown-btn:hover + .country-dropdown {
+    opacity: 1;
+}
+
+.country-search-container:hover {
+    border-color: hsl(180, 100%, 50%);
+}
+
+.language-dropdown-list {
+    height: 8rem;
+    width: 15rem;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 3px;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+.rotate {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+.search-item-icon{
+    background: rgb(1,47,52);
+}
