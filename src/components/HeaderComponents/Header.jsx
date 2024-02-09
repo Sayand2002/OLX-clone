@@ -1,11 +1,23 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
+import { AuthContext } from "../../store/AuthContext";
+import { FirebaseContext } from "../../store/firebaseContext";
+import { signOut } from "firebase/auth";
 
 const Header = () => {
     const [countryRotate, setCountryRotate] = useState(false);
     const [languageRotate, setLanguageRotate] = useState(false);
+    const [profileRotate, setProfileRotate] = useState(false);
+
     const countryRef = useRef();
     const languageRef = useRef();
+    const profileRef = useRef();
+
+    const { user } = useContext(AuthContext);
+    const { auth } = useContext(FirebaseContext);
+
+    const navigate = useNavigate();
 
     const showCountries = (ref) => {
         if(countryRotate == true){
@@ -23,7 +35,19 @@ const Header = () => {
         }
         setLanguageRotate(!languageRotate);
     }
+    const showProfile = (profileRef) => {
+        if (profileRotate) {
+            profileRef.current.style.opacity = 1;
+        } else {
+            profileRef.current.style.opacity = 0;
+        }
+        setProfileRotate(!profileRotate);
+    };
     
+    const userSignout = () => {
+        signOut(auth);
+        navigate("/login");
+    }
     return(
         <header className="header">
             <div className="header-container">
@@ -56,7 +80,7 @@ const Header = () => {
                                     Kerala
                                 </span>
                                 <span>
-                                    <svg width="25px" height="25pxpx" viewBox="0 0 1024 1024" data-aut-id="icon" className="" fillRule="evenodd"><path className="rui-w4DG7" d="M512 85.333c211.755 0 384 172.267 384 384 0 200.576-214.805 392.341-312.661 469.333v0h-142.656c-97.856-76.992-312.683-268.757-312.683-469.333 0-211.733 172.267-384 384-384zM512 170.667c-164.672 0-298.667 133.973-298.667 298.667 0 160.021 196.885 340.523 298.453 416.597 74.816-56.725 298.88-241.323 298.88-416.597 0-164.693-133.973-298.667-298.667-298.667zM512.006 298.66c94.101 0 170.667 76.565 170.667 170.667s-76.565 170.667-170.667 170.667c-94.101 0-170.667-76.565-170.667-170.667s76.565-170.667 170.667-170.667zM512.006 383.994c-47.061 0-85.333 38.272-85.333 85.333s38.272 85.333 85.333 85.333c47.061 0 85.333-38.272 85.333-85.333s-38.272-85.333-85.333-85.333z"></path></svg>
+                                    <svg width="25px" height="25px" viewBox="0 0 1024 1024" data-aut-id="icon" className="" fillRule="evenodd"><path className="rui-w4DG7" d="M512 85.333c211.755 0 384 172.267 384 384 0 200.576-214.805 392.341-312.661 469.333v0h-142.656c-97.856-76.992-312.683-268.757-312.683-469.333 0-211.733 172.267-384 384-384zM512 170.667c-164.672 0-298.667 133.973-298.667 298.667 0 160.021 196.885 340.523 298.453 416.597 74.816-56.725 298.88-241.323 298.88-416.597 0-164.693-133.973-298.667-298.667-298.667zM512.006 298.66c94.101 0 170.667 76.565 170.667 170.667s-76.565 170.667-170.667 170.667c-94.101 0-170.667-76.565-170.667-170.667s76.565-170.667 170.667-170.667zM512.006 383.994c-47.061 0-85.333 38.272-85.333 85.333s38.272 85.333 85.333 85.333c47.061 0 85.333-38.272 85.333-85.333s-38.272-85.333-85.333-85.333z"></path></svg>
                                     Tamil Nadu
                                 </span>
                                 <span>
@@ -104,8 +128,25 @@ const Header = () => {
                
 
 
-                <div className="buttons flex items-center w-48 gap-5">
-                    <div className="login-link font-semibold">Login</div>
+                <div className="buttons flex items-center w-48 gap-6">
+                    {user 
+                    ?  
+                    <>
+                        <img src="/src/assets/userAvathar.png" alt="sorry" width={"50rem"} className="relative cursor-pointer" onClick={()=>{showProfile(profileRef)}}/>
+
+                        <div className="profile-dropdown-list absolute top-16 test-sm" ref={profileRef}>
+                            <span>👨🏻‍💼&nbsp;{user.displayName}</span>
+                            <span className="text-sm">👤&nbsp;{user.email}</span>
+                            <span onClick={() => {userSignout()}} className=" cursor-pointer text-red-400 font-semibold"> 🚪&nbsp;logout</span>
+                        </div>
+
+                    </>
+                    : 
+                    <Link to={'/login'}>
+                        <div className="login-link font-semibold">Login</div>
+                    </Link>
+                    }
+                    
                     <div className="sell-button flex items-center justify-center">
                         <svg width="104" height="48" viewBox="0 0 1603 768" className="_20oLV " ><g>
                             <path className="_32cGm _3Vwmt" d="M434.442 16.944h718.82c202.72 0 367.057 164.337 367.057 367.058s-164.337 367.057-367.057 367.057h-718.82c-202.721 0-367.058-164.337-367.058-367.058s164.337-367.058 367.058-367.058z"></path>

@@ -8,8 +8,8 @@
     width: 30vw;
     height: 80vh;
     border-radius: 5px;
-    border: 1px #8d8888 solid;
-    box-shadow: #0000003d 0px 3px 8px;
+    border: 0.3px #8d8888 solid;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
     overflow: hidden;
 }
 .signup-div ul{
@@ -25,16 +25,16 @@
 }
 .signup-div input{
     background-color: transparent;
-    border-bottom: 1.5px #000000 solid;
+    border-bottom: 1px #878282 solid;
     outline: none;
     padding-top: 3px;
 }
 .signup-div input:focus{
-    border-bottom: 1px #000000 solid;
+    border-bottom: 1.5px #000000 solid;
 }
 .signup-div .signup-btn{
     background-color: #012f34;
-    width: 30%;
+    width: 100%;
     padding: 10px;
     border-radius: 6px;
     color: #ffffff;
@@ -43,6 +43,6 @@
 .signup-div .signup-btn:hover{
     background-color: #ffffff;
     color: #000000;
-    border: 1px #000000 solid;
+    border: 0.5px #000000 solid;
     box-shadow: #0000003d 0px 3px 8px;
 }

@@ -1,86 +1,119 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import { FirebaseContext } from "../../store/firebaseContext";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import ToastContainerWrapper from "../Toast/Toast";
+import showToast from "../Toast/showToastMessage";
 import "./signup.css";
+import { useNavigate } from "react-router-dom";
 import { collection, addDoc } from 'firebase/firestore';
-import { db } from '/src/firebase/config';
+import { Link } from "react-router-dom";
+
 
 const Signup = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
+
     const usernameRef = useRef();
     const emailRef = useRef();
     const phoneRef = useRef();
     const passwordRef = useRef();
-    const userData = {};
+
+    const navigate = useNavigate();
+
+    const { db, auth } = useContext(FirebaseContext);
+
 
     const handleUsernameChange = (e) => {
         const inputValue = e.target.value;
-        handleInputChange(inputValue, usernameRef, setUsername);
-    }
-
-    const handleEmailChange = (e) => {
-        const inputValue = e.target.value;
-        const isValidEmail = validateEmail(inputValue);
-        handleInputChangeWithValidation(inputValue, emailRef, setEmail, isValidEmail);
-    }
-
-    const handlePhoneChange = (e) => {
-        const inputValue = e.target.value;
-        const isValidPhoneNumber = validatePhoneNumber(inputValue);
-        handleInputChangeWithValidation(inputValue, phoneRef, setPhone, isValidPhoneNumber);
+        const usernameRegex = /^.+$/;
+        validateInput(inputValue, usernameRef, setUsername, usernameRegex);
     }
 
     const handlePasswordChange = (e) => {
         const inputValue = e.target.value;
-        handleInputChange(inputValue, passwordRef, setPassword);
+        const passwordRegex = /^.{6,}$/; 
+        validateInput(inputValue, passwordRef, setPassword, passwordRegex);
     }
 
-    const handleInputChange = (inputValue, ref, setState) => {
-        if (inputValue.trim() === "") {
-            ref.current.style.opacity = "1";
-            setTimeout(() => {
-                ref.current.style.opacity = "0";
-            }, 3000);
-        } else {
-            ref.current.style.opacity = "0";
-        }
-        setState(inputValue);
-    }
-
-    const handleInputChangeWithValidation = (inputValue, ref, setState, isValid) => {
-        if (inputValue.trim() === "" || !isValid) {
-            ref.current.style.opacity = "1";
-            setTimeout(() => {
-                ref.current.style.opacity = "0";
-            }, 3000);
-        } else {
-            ref.current.style.opacity = "0";
-        }
-        setState(inputValue);
-    }
-
-    const validateEmail = (email) => {
+    const handleEmailChange = (e) => {
+        const inputValue = e.target.value;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+        validateInput(inputValue, emailRef, setEmail, emailRegex);
     }
 
-    const validatePhoneNumber = (phoneNumber) => {
-        // Simple validation for a 10-digit numeric phone number
+    const handlePhoneChange = (e) => {
+        const inputValue = e.target.value;
         const phoneRegex = /^\d{10}$/;
-        return phoneRegex.test(phoneNumber);
+        validateInput(inputValue, phoneRef, setPhone, phoneRegex);
+    }
+
+   const validateInput = (inputValue, ref, setState, regex) => {
+        if (inputValue.trim() === "" || !regex.test(inputValue)) {
+            ref.current.style.opacity = "1";
+            setTimeout(() => {
+                ref.current.style.opacity = "0";
+            }, 3000);
+        } else {
+            ref.current.style.opacity = "0";
+        }
+        setState(inputValue);
     }
     
+    const handleSubmit = async () => {
+        const isUsernameValid = /^(.+)$/.test(username.trim());
+        const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+        const isPhoneValid = /^\d{10}$/.test(phone.trim());
+        const isPasswordValid = /^.{5,}$/.test(password.trim());
+    
+        usernameRef.current.style.opacity = isUsernameValid ? "0" : "1";
+        emailRef.current.style.opacity = isEmailValid ? "0" : "1";
+        phoneRef.current.style.opacity = isPhoneValid ? "0" : "1";
+        passwordRef.current.style.opacity = isPasswordValid ? "0" : "1";
 
-    const getUserData = async () => {
-        userData.name = username;
-        userData.email = email;
-        userData.phone = phone;
-        userData.password = password;
+        if (isUsernameValid && isEmailValid && isPhoneValid && isPasswordValid) {
+            try {
+                const userData = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userData.user;
+                updateProfile(user, {displayName: username});
 
-        const userCollection = collection(db, "user");
-        await addDoc(userCollection, userData);
-    }
+                const userCollection = collection(db, "user");
+                const data = {
+                id: user.uid,
+                username: username,
+                phone: phone,
+                }
+                await addDoc(userCollection, data);
+
+
+                if(user){
+                    showToast("Signup successfull...", "success", () => {
+                        navigate("/login");
+                    });
+                }
+
+            } catch (error) {
+                if (error.code === "auth/email-already-in-use") {
+                    showToast("Email already exist!", "error");
+                } else if (error.code === "auth/invalid-email") {
+                    emailRef.current.style.opacity = "1";
+                } else if (error.code === "auth/weak-password") {
+                    passwordRef.current.style.opacity = "1";
+                } else {
+                    alert(error);
+                }
+                
+            }
+        }
+        setTimeout(() => {
+            usernameRef.current.style.opacity = "0";
+            emailRef.current.style.opacity = "0";
+            phoneRef.current.style.opacity = "0";
+            passwordRef.current.style.opacity = "0";
+        }, 3000);
+    };
+    
 
     return (
         <div className="signup-container">
@@ -100,16 +133,21 @@ const Signup = () => {
                     <li>
                         <label htmlFor="phone">Phone</label>
                         <input type="text" name="phone" value={phone} onChange={(e) => { handlePhoneChange(e) }} />
-                        <p ref={phoneRef} className="text-red-700 opacity-0">Phone cannot be blank !</p>
+                        <p ref={phoneRef} className="text-red-700 opacity-0">Phone cannot be blank or invalid formate !</p>
                     </li>
                     <li>
                         <label htmlFor="password">Password</label>
                         <input type="password" name="password" value={password} onChange={(e) => { handlePasswordChange(e) }} />
-                        <p ref={passwordRef} className="text-red-700 opacity-0">Password cannot be blank !</p>
+                        <p ref={passwordRef} className="text-red-700 opacity-0">Password should be atleast 5 characters !</p>
                     </li>
-                    <li className="flex flex-col items-center gap-5">
-                        <button className="signup-btn" onClick={getUserData}>SIGNUP</button>
-                        <button className="login-btn">Login</button>
+                    <li className="flex flex-col items-center gap-2">
+                        <button className="signup-btn" onClick={handleSubmit}>
+                            SIGNUP
+                        </button>
+                        <ToastContainerWrapper/>
+                        <Link to={'/login'}>
+                            <button className="signup-login-btn">Login</button>
+                        </Link>
                     </li>
                 </ul>
             </div>

@@ -124,3 +124,17 @@
 .search-item-icon{
     background: rgb(1,47,52);
 }
+
+.profile-dropdown-list{
+    height: 8rem;
+    width: 14rem;
+    right: 1rem;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 3px;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+}

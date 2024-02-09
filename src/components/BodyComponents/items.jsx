@@ -1,4 +1,5 @@
 import ItemCard from "./Itemcard";
+import { Link } from "react-router-dom";
 
 const Items = () =>{
     return(
@@ -8,7 +9,9 @@ const Items = () =>{
                 <div className="item-card flex gap-4">
                     {
                        Array.from({ length: 4 }, (_, index) => (
-                        <ItemCard key={index} />
+                        <Link to={'/product'} key={index}>
+                            <ItemCard key={index} />
+                        </Link>
                       ))
                     }
                 </div>

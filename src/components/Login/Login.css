@@ -1,0 +1,40 @@
+.login{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+h1{
+    color: #012f34;
+    font-stretch:condensed;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.login-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 25rem;
+    height: 30rem;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+    border: 0.5 black solid;
+    border-radius: 5px;
+}
+.login-container input{
+    outline: none;
+    background-color: transparent;
+    border-bottom: 1px solid rgb(157, 151, 151);
+    width: 20rem;
+}
+.login-container input:focus{
+    border-bottom: 2px solid rgb(157, 151, 151);
+}
+.login-btn{
+    border: 1px solid black;
+    padding: 4px;
+    background-color: #012f34;
+    border-radius: 5px;
+    color: white;
+    font-weight: 400;
+}
