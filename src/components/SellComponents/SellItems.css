@@ -37,6 +37,7 @@
     border: 1px solid black;
     border-radius: 3px;
     resize: none;
+    outline: none;
 }
 .image-upload{
     width: 7rem;
@@ -48,4 +49,7 @@
     border-radius: 8px;
     background-color: cadetblue;
     font-weight: 600;
+}
+.textfiled{
+    outline: none;
 }

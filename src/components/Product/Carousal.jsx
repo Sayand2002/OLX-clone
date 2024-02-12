@@ -1,23 +1,22 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import "./Product.css";
+import PropTypes from "prop-types";
 
-const ProductCarousel = () => {
-    return(
+const ProductCarousel = ({ imgArr }) => {
+    return (
         <Carousel>
-                <div>
-                    <img src="./src/assets/admin_bg.jpeg" />
+            {imgArr?.map((url, index) => (
+                <div key={index}>
+                    <img src={`${url}`} alt={`Product Image ${index + 1}`} />
                 </div>
-                <div>
-                    <img src="./src/assets/desk-office.jpg" />
-                </div>
-                <div>
-                    <img src="./src/assets/signup-img.png" />
-                </div>
-                <div>
-                    <img src="./src/assets/image.jpeg" />
-                </div>
-            </Carousel>
-    )
+            ))}
+        </Carousel>
+    );
 }
+
+ProductCarousel.propTypes = {
+    imgArr: PropTypes.array.isRequired
+};
+
 export default ProductCarousel;
