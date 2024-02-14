@@ -1,19 +1,19 @@
-import { useContext, useRef, useState } from "react";
+import { useCallback, useContext, useRef, useState } from "react";
 import { FirebaseContext } from "../../store/firebaseContext";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import ToastContainerWrapper from "../Toast/Toast";
-import showToast from "../Toast/showToastMessage";
 import "./signup.css";
 import { useNavigate } from "react-router-dom";
 import { collection, addDoc } from 'firebase/firestore';
 import { Link } from "react-router-dom";
+import showToast from "../Toast/showToastMessage";
+import ToastContainerWrapper from "../Toast/Toast";
 
 
 const Signup = () => {
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
-    const [password, setPassword] = useState("");
+    const [ username, setUsername ] = useState("");
+    const [ email, setEmail ] = useState("");
+    const [ phone, setPhone ] = useState("");
+    const [ password, setPassword ] = useState("");
 
     const usernameRef = useRef();
     const emailRef = useRef();
@@ -25,29 +25,29 @@ const Signup = () => {
     const { db, auth } = useContext(FirebaseContext);
 
 
-    const handleUsernameChange = (e) => {
+    const handleUsernameChange = useCallback((e) => {
         const inputValue = e.target.value;
         const usernameRegex = /^.+$/;
         validateInput(inputValue, usernameRef, setUsername, usernameRegex);
-    }
+    },[setUsername])
 
-    const handlePasswordChange = (e) => {
+    const handlePasswordChange = useCallback((e) => {
         const inputValue = e.target.value;
         const passwordRegex = /^.{6,}$/; 
         validateInput(inputValue, passwordRef, setPassword, passwordRegex);
-    }
+    }, [setPassword])
 
-    const handleEmailChange = (e) => {
+    const handleEmailChange = useCallback((e) => {
         const inputValue = e.target.value;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         validateInput(inputValue, emailRef, setEmail, emailRegex);
-    }
+    }, [setEmail])
 
-    const handlePhoneChange = (e) => {
+    const handlePhoneChange = useCallback((e) => {
         const inputValue = e.target.value;
         const phoneRegex = /^\d{10}$/;
         validateInput(inputValue, phoneRef, setPhone, phoneRegex);
-    }
+    }, [setPhone])
 
    const validateInput = (inputValue, ref, setState, regex) => {
         if (inputValue.trim() === "" || !regex.test(inputValue)) {
@@ -61,7 +61,7 @@ const Signup = () => {
         setState(inputValue);
     }
     
-    const handleSubmit = async () => {
+    const handleSubmit = useCallback(async () => {
         const isUsernameValid = /^(.+)$/.test(username.trim());
         const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
         const isPhoneValid = /^\d{10}$/.test(phone.trim());
@@ -103,7 +103,6 @@ const Signup = () => {
                 } else {
                     alert(error);
                 }
-                
             }
         }
         setTimeout(() => {
@@ -112,11 +111,10 @@ const Signup = () => {
             phoneRef.current.style.opacity = "0";
             passwordRef.current.style.opacity = "0";
         }, 3000);
-    };
-    
+    }, [auth, db, username, password, phone, email, navigate])
 
     return (
-        <div className="signup-container">
+        <div className="signup-container relative">
             <div className="signup-div flex flex-col items-center">
                 <img src="../src/assets/signup-img.png" alt="sorry" width={"50%"} className="pt-6" />
                 <ul>
@@ -144,7 +142,9 @@ const Signup = () => {
                         <button className="signup-btn" onClick={handleSubmit}>
                             SIGNUP
                         </button>
-                        <ToastContainerWrapper/>
+
+                        < ToastContainerWrapper/>
+
                         <Link to={'/login'}>
                             <button className="signup-login-btn">Login</button>
                         </Link>
